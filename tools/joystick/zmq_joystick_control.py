@@ -86,7 +86,9 @@ class ZMQController:
         return False
 
 def send_thread(controller):
-    pm = messaging.PubMaster(['testJoystick'])
+    # pm = messaging.PubMaster(['testJoystick'])
+    pm = messaging.PubMaster(['testJoystick', 'blinkerControl'])
+
     rk = Ratekeeper(100, print_delay_threshold=None)
 
     while True:
@@ -102,6 +104,11 @@ def send_thread(controller):
         joystick_msg = messaging.new_message('testJoystick')
         joystick_msg.valid = True
 
+        blinker_msg = messaging.new_message('blinkerControl')
+        blinker_msg.valid = True
+        blinker_msg.blinkerControl.leftBlinker = True
+        blinker_msg.blinkerControl.rightBlinker = False
+
         # Set axes in the order expected by openpilot
         # Explicitly convert to native Python float to avoid numpy.float64 issues
         joystick_msg.testJoystick.axes = [
@@ -110,6 +117,7 @@ def send_thread(controller):
         ]
 
         pm.send('testJoystick', joystick_msg)
+        # pm.send('blinkerControl', blinker_msg)
         rk.keep_time()
 
 def zmq_control_thread(controller):

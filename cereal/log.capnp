@@ -2449,6 +2449,12 @@ struct Touch {
   value @4 :Int32;
 }
 
+struct Blinkers {
+  # convenient for debug and live tuning
+  leftBlinker @0: Bool;
+  rightBlinker @1: Bool;
+}
+
 struct Event {
   logMonoTime @0 :UInt64;  # nanoseconds
   valid @67 :Bool = true;
@@ -2630,5 +2636,8 @@ struct Event {
     liveLocationKalmanDEPRECATED @72 :LiveLocationKalman;
     liveTracksDEPRECATED @16 :List(LiveTracksDEPRECATED);
     onroadEventsDEPRECATED @68: List(Car.OnroadEventDEPRECATED);
+
+    # New msg (fervh)
+    blinkerControl @146: Blinkers;
   }
 }
